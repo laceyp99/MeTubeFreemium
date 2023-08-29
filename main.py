@@ -6,7 +6,7 @@ import os
 from io import BytesIO
 
 # hard coded playlist link to my "Downloads" playlist I'll add all the vids I want to download to
-link = "https://youtube.com/playlist?list=PLneyJW8_UXGHAUb6koeWhiViqgXXJTwcW&si=VliqH_la6KE90-Fd"
+link = "INSERT_YOUTUBE_PLAYLIST_LINK_HERE"
 # hard coded output path for downloaded videos
 script_directory = os.path.dirname(os.path.abspath(__file__))
 downloads_directory = os.path.join(script_directory, 'Downloads')
@@ -44,7 +44,7 @@ def upload_split_video_parts(drive, video_parts, file_name):
         # Create an in-memory BytesIO buffer for the content
         content_buffer = BytesIO(part)
         
-        file = drive.CreateFile({'title': part_name, 'parents': [{'id': "16GQt75QiRHUyQpEkIT4uxE2cssk7X-8g"}]})
+        file = drive.CreateFile({'title': part_name, 'parents': [{'id': "INSERT_GOOGLE_DRIVE_FOLDER_ID_HERE"}]})
         
         # Set the content of the file to the BytesIO buffer
         file.content = content_buffer
@@ -75,7 +75,7 @@ def upload_to_drive(drive, local_path):
         print(f"File {file_name} exceeds the maximum allowed file size of 100 MB. Skipping upload.")
         return
 
-    drive_file = drive.CreateFile({'title': file_name, 'parents': [{'id': "16GQt75QiRHUyQpEkIT4uxE2cssk7X-8g"}]})
+    drive_file = drive.CreateFile({'title': file_name, 'parents': [{'id': "INSERT_GOOGLE_DRIVE_FOLDER_ID_HERE"}]})
     drive_file.SetContentFile(local_path)
     print(f"Starting the upload of {file_name} to your Google Drive")
     try:
