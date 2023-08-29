@@ -5,9 +5,9 @@ from pytube import Playlist
 import os
 from io import BytesIO
 
-# hard coded playlist link to my "Downloads" playlist I'll add all the vids I want to download to
+# playlist link
 link = "INSERT_YOUTUBE_PLAYLIST_LINK_HERE"
-# hard coded output path for downloaded videos
+# output path for downloaded videos
 script_directory = os.path.dirname(os.path.abspath(__file__))
 downloads_directory = os.path.join(script_directory, 'Downloads')
         
