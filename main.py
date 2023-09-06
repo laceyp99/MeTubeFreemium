@@ -1,9 +1,8 @@
 # A youtube playlist downloader that imports the mp4 files into a google drive folder to be acessed by my iPhone to download and watch on my commute offline.
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
+from pydrive2.auth import GoogleAuth
+from pydrive2.drive import GoogleDrive
 from pytube import Playlist
 import os
-from io import BytesIO
 
 # playlist link
 link = "INSERT_YOUTUBE_PLAYLIST_LINK_HERE"
@@ -24,61 +23,14 @@ def authenticate_drive():
     drive = GoogleDrive(gauth)
     return drive
 
-# splits the large video into smaller chunks to then upload
-def split_video(file_path, chunk_size):
-    video_parts = []
-    with open(file_path, 'rb') as video_file:
-        while True:
-            chunk = video_file.read(chunk_size)
-            if not chunk:
-                break
-            video_parts.append(chunk)
-    return video_parts
-
-# uploads each split video part
-def upload_split_video_parts(drive, video_parts, file_name):
-    title = file_name[:-4]
-    for idx, part in enumerate(video_parts, start=1):
-        part_name = f"{title} part {idx}.mp4"
-        
-        # Create an in-memory BytesIO buffer for the content
-        content_buffer = BytesIO(part)
-        
-        file = drive.CreateFile({'title': part_name, 'parents': [{'id': "INSERT_GOOGLE_DRIVE_FOLDER_ID_HERE"}]})
-        
-        # Set the content of the file to the BytesIO buffer
-        file.content = content_buffer
-        
-        # Upload the file
-        file.Upload()
-        
-        print(f"Uploaded {part_name} to Google Drive successfully")
-
-# main upload function that calls the right function to upload based on the file size
-def upload_large_video(drive, local_path):
-    file_name = os.path.basename(local_path)
-    file_size = os.path.getsize(local_path) / (1024 * 1024)
-    
-    if file_size <= 100:
-        upload_to_drive(drive, local_path)
-    else:
-        chunk_size = 50 * 1024 * 1024  # 50 MB chunk size
-        video_parts = split_video(local_path, chunk_size)
-        upload_split_video_parts(drive, video_parts, file_name)
-
 # uploads a normal sized video (pydrive limits uploads at 100 MB)
 def upload_to_drive(drive, local_path):
     file_name = os.path.basename(local_path)
-    file_size = os.path.getsize(local_path) / (1024 * 1024)  # Convert bytes to MB
-
-    if file_size > 100:
-        print(f"File {file_name} exceeds the maximum allowed file size of 100 MB. Skipping upload.")
-        return
-
-    drive_file = drive.CreateFile({'title': file_name, 'parents': [{'id': "INSERT_GOOGLE_DRIVE_FOLDER_ID_HERE"}]})
-    drive_file.SetContentFile(local_path)
+    # copy the folder ID at the end of the desired Google Drive Folder URL. Exclude https://drive.google.com/drive/u/0/folders/
+    drive_file = drive.CreateFile({'title': file_name, 'parents': [{'id': "INSERT_DRIVE_FOLDER_ID_HERE"}]}) 
     print(f"Starting the upload of {file_name} to your Google Drive")
     try:
+        drive_file.SetContentFile(local_path)  # Set the content of the file
         drive_file.Upload()
         print(f"Upload of {file_name} successful")
     except Exception as e:
@@ -97,7 +49,7 @@ def download_and_upload_playlist():
             print(f"{idx}. {video.title}")
             video_path = video.streams.get_highest_resolution().download(output_path)
             print(f"Download of {video.title} complete")
-            upload_large_video(drive, video_path)
+            upload_to_drive(drive, video_path)
             os.remove(video_path)  # Remove local file after upload
     except Exception as e:
         print(f"An error occurred: {e}")
