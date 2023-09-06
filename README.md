@@ -5,7 +5,7 @@ MeTube Freemium is a Python script that allows you to download YouTube videos fr
 ## Prerequisites
 
 - Python 3.x
-- PyDrive library (`pip install PyDrive`)
+- PyDrive2 library (`pip install pydrive2`)
 - PyTube library (`pip install pytube`)
 - A Google account
 
@@ -21,7 +21,7 @@ MeTube Freemium is a Python script that allows you to download YouTube videos fr
 2. **Install the required libraries:**
 
     ```bash
-    pip install pydrive pytube
+    pip install pydrive2 pytube
     ```
 
 3. **Set up Google Drive API:**
@@ -40,7 +40,7 @@ MeTube Freemium is a Python script that allows you to download YouTube videos fr
 
 2. **Enter the YouTube playlist link and Google Drive folder ID.**
 
-3. **The script will start downloading the videos from the playlist and then will upload them to Google Drive. If the video file size exceeds the 100 MB limit, the video will be uploaded in parts.**
+3. **The script will start downloading the videos from the playlist and then will upload them to Google Drive.**
 
 ## Project Structure
 
