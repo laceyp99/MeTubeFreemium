@@ -14,7 +14,7 @@ MeTube Freemium is a Python script that allows you to download YouTube videos fr
 1. **Clone this repository:**
 
     ```bash
-    git clone https://github.com/yourusername/metube-freemium.git
+    git clone https://github.com/laceyp99/metube-freemium.git
     cd metube-freemium
     ```
 
@@ -32,13 +32,13 @@ MeTube Freemium is a Python script that allows you to download YouTube videos fr
 
 ## Usage
 
-1. **Run the script:**
+1. **Enter the YouTube playlist link and Google Drive folder ID.**
+   
+2. **Run the script:**
 
     ```bash
     python main.py
     ```
-
-2. **Enter the YouTube playlist link and Google Drive folder ID.**
 
 3. **The script will start downloading the videos from the playlist and then will upload them to Google Drive.**
 
